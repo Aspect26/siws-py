@@ -71,9 +71,13 @@ class SiwsMessage(BaseModel):
 
         prefix = "\n".join([header, self.address])
 
+        version_field = f"Version: {self.version}"
+
+        chain_field = f"Chain ID: {self.chain_id or 1}"
+
         nonce_field = f"Nonce: {self.nonce}"
 
-        suffix_array = [uri_field, nonce_field]
+        suffix_array = [uri_field, version_field, chain_field, nonce_field]
 
         if self.issued_at is None:
             self.issued_at = datetime.utcnow().isoformat()
