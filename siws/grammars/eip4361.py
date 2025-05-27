@@ -27,18 +27,20 @@ class Rule(_Rule):
 
     grammar = [
         'sign-in-with-stacks = domain %s" wants you to sign in with your Solana account:" LF address LF LF [ '
-        'statement LF ] LF %s"URI: " uri LF %s"Nonce: " nonce LF '
+        'statement LF ] LF %s"URI: " uri LF %s"Version: " version LF  %s"Chain ID: " chain-id LF  %s"Nonce: " nonce LF '
         '%s"Issued At: " issued-at [ LF %s"Expiration Time: " expiration-time ] [ LF %s"Not Before: " not-before ] [ '
         'LF %s"Request ID: " request-id ] [ LF %s"Resources:" resources ]',
         "domain = authority",
-        'address = 41*( ALPHA / DIGIT )',
+        'address = 44*( ALPHA / DIGIT )',
         'statement = 1*( reserved / unreserved / " " )',
         "uri = URI",
+        'version = "1"',
         "nonce = 8*( ALPHA / DIGIT )",
         "issued-at = date-time",
         "expiration-time = date-time",
         "not-before = date-time",
         "request-id = *pchar",
+        "chain-id = 1*DIGIT",
         "resources = *( LF resource )",
         'resource = "- " URI',
     ]
