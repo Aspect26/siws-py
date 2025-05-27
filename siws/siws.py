@@ -27,7 +27,7 @@ class SiwsMessage(BaseModel):
     expiration_time: Optional[CustomDateTime] = Field(None)
     not_before: Optional[CustomDateTime] = Field(None)
     request_id: Optional[str] = Field(None)
-    resources: list[AnyUrl] = Field(None, min_items=1)
+    resources: list[AnyUrl] = Field(None, min_length=1)
 
     def __init__(self, message: Union[str, dict], abnf: bool = True):
         if isinstance(message, str):
