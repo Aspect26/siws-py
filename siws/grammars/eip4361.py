@@ -26,7 +26,7 @@ class Rule(_Rule):
     """Rules from EIP-4361"""
 
     grammar = [
-        'sign-in-with-stacks = domain %s" wants you to sign in with your Stacks account:" LF address LF LF [ '
+        'sign-in-with-stacks = domain %s" wants you to sign in with your Solana account:" LF address LF LF [ '
         'statement LF ] LF %s"URI: " uri LF %s"Nonce: " nonce LF '
         '%s"Issued At: " issued-at [ LF %s"Expiration Time: " expiration-time ] [ LF %s"Not Before: " not-before ] [ '
         'LF %s"Request ID: " request-id ] [ LF %s"Resources:" resources ]',
