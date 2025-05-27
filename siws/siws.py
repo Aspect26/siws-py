@@ -4,12 +4,21 @@ from hashlib import sha256
 from typing import Optional, Union
 
 from ecdsa import SECP256k1, VerifyingKey
-from pydantic import AnyUrl, BaseModel, Field
+from pydantic import AnyUrl, BaseModel, Field, TypeAdapter, NonNegativeInt, BeforeValidator
 
 from siws import exceptions
 from siws.custom_types import CustomDateTime
 from siws.parsed import ABNFParsedMessage, RegExpParsedMessage
 from siws.utils import build_signature, encode_defunc
+
+
+# NOTE: Do not override the original uri string, just do validation
+# https://github.com/pydantic/pydantic/issues/7186#issuecomment-1874338146
+AnyUrlTypeAdapter = TypeAdapter(AnyUrl)
+AnyUrlStr = Annotated[
+    str,
+    BeforeValidator(lambda value: AnyUrlTypeAdapter.validate_python(value) and value),
+]
 
 
 class SiwsMessage(BaseModel):
@@ -20,7 +29,9 @@ class SiwsMessage(BaseModel):
 
     domain: str = Field(pattern="^[^/?#]+$")
     address: str
-    uri: AnyUrl
+    uri: AnyUrlStr
+    version: str
+    chain_id: NonNegativeInt
     issued_at: CustomDateTime
     nonce: str = Field(min_length=8)
     statement: Optional[str] = Field(None, pattern="^[^\n]+$")
