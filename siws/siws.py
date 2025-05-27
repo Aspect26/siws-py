@@ -8,6 +8,7 @@ from typing_extensions import Annotated
 from ecdsa import SECP256k1, VerifyingKey
 from pydantic import AnyUrl, BaseModel, Field, TypeAdapter, NonNegativeInt, BeforeValidator
 
+from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
 
 from siws import exceptions
