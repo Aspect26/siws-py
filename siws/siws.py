@@ -1,3 +1,4 @@
+import base58
 
 from datetime import datetime
 from hashlib import sha256
@@ -6,6 +7,8 @@ from typing_extensions import Annotated
 
 from ecdsa import SECP256k1, VerifyingKey
 from pydantic import AnyUrl, BaseModel, Field, TypeAdapter, NonNegativeInt, BeforeValidator
+
+from nacl.signing import VerifyKey
 
 from siws import exceptions
 from siws.custom_types import CustomDateTime
@@ -111,13 +114,13 @@ class SiwsMessage(BaseModel):
     def verify(
         self,
         signature: str,
-        public_key: str,
         *,
         domain: Optional[str] = None,
         nonce: Optional[str] = None,
         timestamp: Optional[datetime] = None,
-    ) -> bool:
-        message = encode_defunc(self.prepare_message())
+    ) -> None:
+        
+        message = self.prepare_message().encode()
 
         verification_time = datetime.utcnow() if not timestamp else timestamp
         if domain and domain != self.domain:
@@ -130,14 +133,9 @@ class SiwsMessage(BaseModel):
             raise exceptions.ExpiredMessage
         elif self.not_before and verification_time <= self.not_before.date:
             raise exceptions.NotYetValidMessage
-
-        vk = VerifyingKey.from_string(
-            bytearray.fromhex(public_key), curve=SECP256k1, hashfunc=sha256
-        )
-
-        parsed_signature = build_signature(signature)
-
-        if not vk.verify(parsed_signature, message):
-            raise exceptions.InvalidSignature
-
-        return True
+        
+        try:
+            verify_key = VerifyKey(base58.b58decode(self.address))
+            verify_key.verify(message, base58.b58decode(signature))
+        except BadSignatureError as e:
+            raise exceptions.InvalidSignature from e
