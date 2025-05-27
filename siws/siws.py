@@ -68,7 +68,7 @@ class SiwsMessage(BaseModel):
         :return: EIP-4361 formatted message, ready for EIP-191 signing.
         """
         header = (
-            f"{self.domain} wants you to sign in with your Stacks account:"
+            f"{self.domain} wants you to sign in with your Solana account:"
         )
 
         uri_field = f"URI: {self.uri}"
