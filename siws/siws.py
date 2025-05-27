@@ -8,7 +8,6 @@ from typing_extensions import Annotated
 from ecdsa import SECP256k1, VerifyingKey
 from pydantic import AnyUrl, BaseModel, Field, TypeAdapter, NonNegativeInt, BeforeValidator
 
-from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
 
 from siws import exceptions
@@ -114,13 +113,13 @@ class SiwsMessage(BaseModel):
 
     def verify(
         self,
-        signature: str,
+        signature: bytes,
         *,
         domain: Optional[str] = None,
         nonce: Optional[str] = None,
         timestamp: Optional[datetime] = None,
     ) -> None:
-        
+
         message = self.prepare_message().encode()
 
         verification_time = datetime.utcnow() if not timestamp else timestamp
@@ -134,9 +133,9 @@ class SiwsMessage(BaseModel):
             raise exceptions.ExpiredMessage
         elif self.not_before and verification_time <= self.not_before.date:
             raise exceptions.NotYetValidMessage
-        
+
         try:
             verify_key = VerifyKey(base58.b58decode(self.address))
-            verify_key.verify(message, base58.b58decode(signature))
+            verify_key.verify(message.encode(), signature)
         except BadSignatureError as e:
             raise exceptions.InvalidSignature from e
