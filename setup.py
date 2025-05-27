@@ -3,7 +3,7 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-dependencies = ["pydantic", "abnf", "python-dateutil", "ecdsa", "nacl"]
+dependencies = ["pydantic", "abnf", "python-dateutil", "ecdsa", "PyNaCl"]
 
 setuptools.setup(
     name="siws",
