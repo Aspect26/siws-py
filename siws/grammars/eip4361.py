@@ -31,7 +31,7 @@ class Rule(_Rule):
         '%s"Issued At: " issued-at [ LF %s"Expiration Time: " expiration-time ] [ LF %s"Not Before: " not-before ] [ '
         'LF %s"Request ID: " request-id ] [ LF %s"Resources:" resources ]',
         "domain = authority",
-        'address = 44*( ALPHA / DIGIT )',
+        'address = 32*44( ALPHA / DIGIT )',
         'statement = 1*( reserved / unreserved / " " )',
         "uri = URI",
         'version = "1"',
