@@ -12,7 +12,7 @@ class CustomDateTime(str):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v):
+    def validate(cls, v, *args, **kwargs):
         if not isinstance(v, str):
             raise TypeError("string required")
         cls.date = isoparse(v)
