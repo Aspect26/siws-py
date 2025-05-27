@@ -1,6 +1,6 @@
 # Sign-In with Stacks
 
-This package provides a Python adaptation of EIP-4361: Sign In With Ethereum to Stacks ecosystem.
+This package provides a Python adaptation of EIP-4361: Sign In With Ethereum to Solana ecosystem.
 
 ## Usage
 
