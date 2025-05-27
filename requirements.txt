@@ -2,3 +2,4 @@ pydantic
 abnf
 python-dateutil
 ecdsa
+nacl
