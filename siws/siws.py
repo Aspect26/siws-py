@@ -137,6 +137,6 @@ class SiwsMessage(BaseModel):
 
         try:
             verify_key = VerifyKey(base58.b58decode(self.address))
-            verify_key.verify(message.encode(), signature)
+            verify_key.verify(message, signature)
         except BadSignatureError as e:
             raise exceptions.InvalidSignature from e
