@@ -18,12 +18,12 @@ class SiwsMessage(BaseModel):
     Its utility striclty remains within formatting and compliance.
     """
 
-    domain: str = Field(regex="^[^/?#]+$")
+    domain: str = Field(pattern="^[^/?#]+$")
     address: str
     uri: AnyUrl
     issued_at: CustomDateTime
     nonce: str = Field(min_length=8)
-    statement: Optional[str] = Field(None, regex="^[^\n]+$")
+    statement: Optional[str] = Field(None, pattern="^[^\n]+$")
     expiration_time: Optional[CustomDateTime] = Field(None)
     not_before: Optional[CustomDateTime] = Field(None)
     request_id: Optional[str] = Field(None)
